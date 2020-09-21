@@ -24,7 +24,10 @@ io.on('connection',(socket)=>{
             callback()
     })
     socket.on('disconnect',()=>{
-        console.log('disconnected')
+        const user = removeUser(socket.io)
+        if(user){
+            io.to(user.room).emit('message',{user:'admin',text:`${user.name} has left the room`})
+        }
     })
 })
 server.listen(PORT,()=>{
